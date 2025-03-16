@@ -23,6 +23,8 @@ rather than ahead of time (AOT) like traditional compiled languages (e.g., C, C+
 And because JS is a JIT-compiled language, there's always startup cost to JIT-compile your code.  
 There are other limitations that explain why Microsoft felt the need to port the TS compiler to native code.  
 
+![image](https://github.com/user-attachments/assets/b35437f6-4773-43c8-a8dc-43a0f9a4c8ca)
+
 ## Illustrating the problem and showcasing the solution
 
 If we try and run a full compile of the VS Code project, which is about one and half million lines of code, we'll see that it takes about a minute.  
