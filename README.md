@@ -43,7 +43,7 @@ It's the lowest level language they can get to, and it gives them:
 - full optimized native code support on all platforms
 - great control over data layout (see side note below)
 - the ability to have cyclic data structures
-- automatic memory management with a garbage collector
+- automatic memory management via garbage collection
 - great access to concurrency (ability to efficiently handle multiple tasks or processes simultaneously)
 
 ### Side note
