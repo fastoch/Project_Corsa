@@ -2,7 +2,9 @@
 
 Microsoft effort to port the TypeScript compiler and toolset to native code (started in 2024).  
 
-src = https://www.youtube.com/watch?v=pNlq-EVld70 - A 10x faster TypeScript
+src = https://www.youtube.com/watch?v=pNlq-EVld70 - A 10x faster TypeScript  
+
+GitHub Repo of this project = https://github.com/microsoft/typescript-go
 
 # Introduction
 
@@ -49,7 +51,7 @@ It describes how the individual components of data are arranged and accessed wit
 
 # What about the language service?
 
-Microsoft are not just building a CLI compiler. There's also the language service, which is arguably the most important thing.  
+Microsoft are not just building a command-line compiler. There's also the language service, which is arguably the most important thing.  
 If we launch the implementation of VS Code that runs the Go language service, and restart the language server, it will take like 3 seconds to complete.  
 
 That's at least 5 times faster than project loads with the old language service (`tsserver`).  
@@ -67,7 +69,46 @@ than what is in our existing language service, especially when it comes to thing
 It turns out that about half of the performance gain comes from moving to native code.  
 The other half comes from the ability to use concurrency (concurrent programming).  
 
+To illustrate that, let's run a full compile of the old TS compiler using this very same old compiler:  
+![image](https://github.com/user-attachments/assets/52df2585-bd6b-4821-b136-f2a7772cea74)  
 
+Now, let's compile the old compiler using the new compiler but forcing a single-threaded compilation:  
+![image](https://github.com/user-attachments/assets/39006027-8feb-4a54-a1e1-8ef29166bc2c)  
 
+The new compiler is more performant, even when running single-threaded. And if we use concurrency:  
+![image](https://github.com/user-attachments/assets/74e07928-31c5-400e-acb1-202265378109)  
 
-@9
+# Anders Hejlsberg explains leveraging concurrency
+
+## Parsing
+
+To parse a source file basically means:
+- load it into memory
+- build a data structure that represents the source text in an Abstract Syntax Tree (AST)
+- leave it in memory
+
+You can do that for each file, and if you have 8 cores available, you can go 8 times faster because it's completely parallelizable.  
+
+## Type checking
+
+Type checking isn't quite parallelizable in the same manner as parsing, because types kind of reach across multiple files.  
+So instead of running one type checker on a program, we create 4 checkers and we gave each of them the same program but we tell them 
+to check a quarter of the files.   
+
+By doing so, we can get 2 to 3 times faster in the check phase, at the cost of maybe consuming 20 to 25% more memory.  
+But overall, we still consume less memory than we used to.  
+
+# Final thoughts
+
+Microsoft do expect within 2025 to have a fully functional replacement command-line TS compiler that supports:
+- JS
+- JSDoc
+- JSX
+- and possibly incremental compile as well
+
+This should also feature a new inter-process API such that from other languages you can talk to the compiler.  
+
+Microsoft are looking at using this performance gain to think about new kinds of AI features that become possible, such as:
+- immediate type checking of an LLM's output
+- provision of semantic information in the LLM prompts
+- and so forth...
