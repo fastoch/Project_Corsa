@@ -8,8 +8,7 @@ GitHub Repo of this project = https://github.com/microsoft/typescript-go
 
 # Introduction
 
-Since the inception of TypeScript (TS) back in 2012, TS has been written in itself, which brought some challenges in terms 
-of performance and scalability.  
+Since its inception in 2012, TypeScript has been written in itself, which brought some challenges in terms of performance and scalability.  
 
 The JavaScript (JS) runtime platform is really optimized for UI and browser usage, but not so much for compute intensive workloads 
 like compilers and system-level tools.  
@@ -35,7 +34,7 @@ Now, if we use the new native code compiler `tsgo`, this will take about 6 secon
 
 # We wanted a port, not a rewrite
 
-Microsoft wanted to port their existing compiler, lock, stock and barrel, and get all of the same semantics in the new code base.  
+Microsoft wanted to port their existing compiler, lock, stock and barrel, and get all of the same semantics and behavior in the new code base.  
 For that port, they chose the Go language.  
 
 They have spent a lot of time prototyping in many languages, and they found that Go is the most suitable for that purpose.  
